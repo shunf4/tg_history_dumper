@@ -221,6 +221,7 @@ func printChats(chats []*Chat, config *Config) {
 func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 	chats := make([]*Chat, 0)
 	offsetDate := int32(0)
+	retryCount := 0
 	for {
 		time.Sleep(time.Second)
 		res := tg.SendSyncRetry(mtproto.TL_messages_getDialogs{
@@ -281,12 +282,18 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 			if len(chats) == int(slice.Count) {
 				return chats, nil
 			}
-			// if len(slice.Dialogs) < 100 {
-			// 	log.Warn("some chats seem missing: got %d in the end, expected %d; retrying from start", len(chats), slice.Count)
-			// 	// log.Warn("some chats seem missing: got %d in the end, expected %d; still continue", len(chats), slice.Count)
-			// 	// return chats, nil
-			// 	offsetDate = 0
-			// }
+			if len(slice.Dialogs) < 100 {
+				if retryCount < 5 {
+					log.Warn("some chats seem missing: got %d in the end, expected %d; retrying from start", len(chats), slice.Count)
+					// log.Warn("some chats seem missing: got %d in the end, expected %d; still continue", len(chats), slice.Count)
+					// return chats, nil
+					offsetDate = 0
+					retryCount++
+				} else {
+					log.Warn("some chats seem missing: got %d in the end, expected %d; still continue", len(chats), slice.Count)
+					return chats, nil
+				}
+			}
 		default:
 			return nil, merry.Wrap(mtproto.WrongRespError(res))
 		}
