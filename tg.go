@@ -201,9 +201,13 @@ func removeDuplicateValues(intSlice []int) []int {
 	return list
 }
 
-func printChats(chats []*Chat) {
+func printChats(chats []*Chat, config *Config) {
 	for i, c := range chats {
-		fmt.Printf("[%d] Title: %s ID: %d Type: %s\n", i, c.Title, c.ID, c.Type.String())
+		matchesStr := "no"
+		if config.History.Match(c, nil) == MatchTrue {
+			matchesStr = "yes"
+		}
+		fmt.Printf("[%d] Title: %s ID: %d Type: %s Matches: %sn", i, c.Title, c.ID, c.Type.String(), matchesStr)
 	}
 }
 
