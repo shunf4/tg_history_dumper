@@ -276,8 +276,8 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 					}
 				}
 				chats = unique_chats
+				log.Info("chats (dedup) len: %d", len(chats))
 			}
-			log.Info("dedup len: %d", len(chats))
 
 			if len(chats) == int(slice.Count) {
 				return chats, nil
