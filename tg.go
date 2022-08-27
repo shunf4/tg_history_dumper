@@ -252,7 +252,13 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 			}
 			log.Info("chats len: %d", len(chats))
 
-			offsetDate, err = tgGetMessageStamp(slice.Messages[len(slice.Messages)-1])
+			// slice.Messages may contain much older pinned message, which must not be used as the offset for next pagination
+			oldestMessageIndexInLimit := 99
+			if oldestMessageIndexInLimit > len(slice.Messages)-1 {
+				oldestMessageIndexInLimit = len(slice.Messages) - 1
+			}
+
+			offsetDate, err = tgGetMessageStamp(slice.Messages[oldestMessageIndexInLimit])
 			if err != nil {
 				return nil, merry.Wrap(err)
 			}
