@@ -201,6 +201,12 @@ func removeDuplicateValues(intSlice []int) []int {
 	return list
 }
 
+func printChats(chats []*Chat) {
+	for i, c := range chats {
+		fmt.Printf("[%d] Title: %s ID: %d\n", i, c.Title, c.ID)
+	}
+}
+
 func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 	chats := make([]*Chat, 0)
 	offsetDate := int32(0)
