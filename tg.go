@@ -203,7 +203,7 @@ func removeDuplicateValues(intSlice []int) []int {
 
 func printChats(chats []*Chat) {
 	for i, c := range chats {
-		fmt.Printf("[%d] Title: %s ID: %d\n", i, c.Title, c.ID)
+		fmt.Printf("[%d] Title: %s ID: %d Type: %s\n", i, c.Title, c.ID, c.Type.String())
 	}
 }
 
