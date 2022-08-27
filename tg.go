@@ -185,9 +185,9 @@ func tgExtractDialogsData(dialogs []mtproto.TL, chats []mtproto.TL, users []mtpr
 	return extractedChats, nil
 }
 
-func removeDuplicateValues(intSlice []int) []int {
-	keys := make(map[int]bool)
-	list := []int{}
+func removeDuplicateValues(intSlice []int64) []int64 {
+	keys := make(map[int64]bool)
+	list := []int64{}
 
 	// If the key(values of the slice) is not equal
 	// to the already present value in new slice (list)
@@ -222,6 +222,7 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 	chats := make([]*Chat, 0)
 	offsetDate := int32(0)
 	for {
+		time.Sleep(time.Second)
 		res := tg.SendSyncRetry(mtproto.TL_messages_getDialogs{
 			OffsetPeer: mtproto.TL_inputPeerEmpty{},
 			OffsetDate: offsetDate,
@@ -230,19 +231,25 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 
 		switch slice := res.(type) {
 		case mtproto.TL_messages_dialogs:
+			log.Info("got TL_messages_dialogs")
 			chats, err := tgExtractDialogsData(slice.Dialogs, slice.Chats, slice.Users)
+			log.Info("chats len: %d", len(chats))
 			if err != nil {
 				return nil, merry.Wrap(err)
 			}
 			return chats, nil
 		case mtproto.TL_messages_dialogsSlice:
+			log.Info("got TL_messages_dialogsSlice")
 			group, err := tgExtractDialogsData(slice.Dialogs, slice.Chats, slice.Users)
 			if err != nil {
 				return nil, merry.Wrap(err)
 			}
+			log.Info("slice.Count: %d", slice.Count)
+			log.Info("group len: %d", len(group))
 			for _, d := range group {
 				chats = append(chats, d)
 			}
+			log.Info("chats len: %d", len(chats))
 
 			offsetDate, err = tgGetMessageStamp(slice.Messages[len(slice.Messages)-1])
 			if err != nil {
@@ -250,9 +257,9 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 			}
 
 			if len(chats) > int(slice.Count) { //Remove duplicates if chats > slice.Count
-				ids := []int{}
+				ids := []int64{}
 				for _, chat := range chats {
-					i := int(chat.ID)
+					i := int64(chat.ID)
 					ids = append(ids, i)
 				}
 				unique_ids := removeDuplicateValues(ids)
@@ -261,7 +268,7 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 				for _, unique_id := range unique_ids {
 					for _, chat := range chats {
 
-						if int(chat.ID) == unique_id {
+						if int64(chat.ID) == unique_id {
 							unique_chats = append(unique_chats, chat)
 							break
 						}
@@ -269,15 +276,16 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 				}
 				chats = unique_chats
 			}
+			log.Info("dedup len: %d", len(chats))
 
 			if len(chats) == int(slice.Count) {
 				return chats, nil
 			}
 			if len(slice.Dialogs) < 100 {
-				// log.Warn("some chats seem missing: got %d in the end, expected %d; retrying from start", len(chats), slice.Count)
-				log.Warn("some chats seem missing: got %d in the end, expected %d; still continue", len(chats), slice.Count)
-				return chats, nil
-				// offsetDate = 0
+				log.Warn("some chats seem missing: got %d in the end, expected %d; retrying from start", len(chats), slice.Count)
+				// log.Warn("some chats seem missing: got %d in the end, expected %d; still continue", len(chats), slice.Count)
+				// return chats, nil
+				offsetDate = 0
 			}
 		default:
 			return nil, merry.Wrap(mtproto.WrongRespError(res))
