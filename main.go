@@ -306,7 +306,7 @@ func dump() error {
 	if err != nil {
 		return merry.Wrap(err)
 	}
-	printChats(chats)
+	printChats(chats, config)
 
 	CheckConfig(config, chats)
 
