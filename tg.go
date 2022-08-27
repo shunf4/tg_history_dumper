@@ -281,12 +281,12 @@ func tgLoadChats(tg *tgclient.TGClient) ([]*Chat, error) {
 			if len(chats) == int(slice.Count) {
 				return chats, nil
 			}
-			if len(slice.Dialogs) < 100 {
-				log.Warn("some chats seem missing: got %d in the end, expected %d; retrying from start", len(chats), slice.Count)
-				// log.Warn("some chats seem missing: got %d in the end, expected %d; still continue", len(chats), slice.Count)
-				// return chats, nil
-				offsetDate = 0
-			}
+			// if len(slice.Dialogs) < 100 {
+			// 	log.Warn("some chats seem missing: got %d in the end, expected %d; retrying from start", len(chats), slice.Count)
+			// 	// log.Warn("some chats seem missing: got %d in the end, expected %d; still continue", len(chats), slice.Count)
+			// 	// return chats, nil
+			// 	offsetDate = 0
+			// }
 		default:
 			return nil, merry.Wrap(mtproto.WrongRespError(res))
 		}
