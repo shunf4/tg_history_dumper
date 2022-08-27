@@ -207,13 +207,16 @@ func printChats(chats []*Chat, config *Config) {
 		if config.History.Match(c, nil) == MatchTrue {
 			matchesStr = "yes"
 		}
-		// fmt.Printf("[%d] Title: %s ID: %d Type: %s Matches: %s\n", i, c.Title, c.ID, c.Type.String(), matchesStr)
+		fmt.Printf("[%d] Title: %s ID: %d Type: %s Matches: %s\n", i, c.Title, c.ID, c.Type.String(), matchesStr)
+	}
+}
+
+func printChatsJson(chats []*Chat, config *Config) {
+	for _, c := range chats {
 		marshalled, err := json.Marshal(&c)
 		if err != nil {
 			panic(err)
 		}
-		_ = i
-		_ = matchesStr
 		fmt.Printf("%s\n", string(marshalled))
 	}
 }
