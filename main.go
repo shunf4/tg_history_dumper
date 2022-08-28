@@ -88,8 +88,7 @@ func loadAndSaveMessages(tg *tgclient.TGClient, chat *Chat, saver HistorySaver, 
 	chunkSize := int32(100)
 
 	historyLimit := int32(0)
-	// applying limit only if no history has been dumped for this chat yet
-	if startID == 0 {
+	if startID == 0 || true {
 		historyLimit = config.HistoryLimit.For(chat)
 	}
 	if historyLimit > chat.LastMessageID {

@@ -96,7 +96,7 @@ Limits define how many messages will be dumped for chats for the first time.
 They are configured as limit_count:[rules](#rules).
 If chat matches more than one rule, the lower limit is applied.
 If chat does not match any rules, all messages are dumped.
-If there are already some messages from previous dump for the chat, its limits are ignored.
+~~If there are already some messages from previous dump for the chat, its limits are ignored.~~
 
 For example, this config sets limit to 5000 for groups, 10000 for channels, dialogs remain unlimited:
 
