@@ -330,12 +330,19 @@ func tgLoadAuths(tg *tgclient.TGClient) ([]mtproto.TL, error) {
 }
 
 // Works in two modes:
+<<<<<<< HEAD
 // 1) when recentOffset <= 0:
 //    requests `limit` messages newer than `lastMsgID`
 // 2) when recentOffset > 0:
 //    requests `limit` oldest messages of `recentOffset` most recent messages
+=======
+//  1. when recentOffset <= 0:
+//     requests `limit` messages newer than `lastMsgID`
+//  2. when recentOffset > 0:
+//     requests `limit` oldest messages of `recentOffset` most recent messages; these messages must be newer than `lastMsgID`
+>>>>>>> d1ee9ba (trying to adjust ranges to fix fetching duplicated older messages after forcibly applying history limits)
 func tgLoadMessages(
-	tg *tgclient.TGClient, peerTL mtproto.TL, limit, lastMsgID, recentOffset int32,
+	tg *tgclient.TGClient, peerTL mtproto.TL, limit, lastMsgID, recentOffset int32, wholeChatLastMsgID int32,
 ) ([]mtproto.TL, []mtproto.TL, []mtproto.TL, error) {
 	var inputPeer mtproto.TL
 	switch peer := peerTL.(type) {
@@ -358,6 +365,13 @@ func tgLoadMessages(
 		params.AddOffset = -limit
 	} else {
 		params.AddOffset = recentOffset - limit
+		newerThanLastMsgIDOffset := wholeChatLastMsgID - lastMsgID - limit
+		if params.AddOffset > newerThanLastMsgIDOffset {
+			params.AddOffset = newerThanLastMsgIDOffset
+		}
+		if params.AddOffset < 0 {
+			params.AddOffset = 0
+		}
 	}
 	res := tg.SendSyncRetry(params, time.Second, 0, 30*time.Second)
 

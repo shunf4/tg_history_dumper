@@ -120,11 +120,11 @@ func loadAndSaveMessages(tg *tgclient.TGClient, chat *Chat, saver HistorySaver, 
 				}
 				limitText = fmt.Sprintf(", %d limit", historyLimit)
 			}
-			log.Info("loading messages: %s from #%d (+%d) until #%d (~%d left%s)",
-				greenf("%d%%", percent), fromNum, chunkSize, chat.LastMessageID, approxRemCount, limitText)
+			log.Info("loading messages: %s (lastID=%d) from #%d (+%d) until #%d (~%d left%s)",
+				greenf("%d%%", percent), lastID, fromNum, chunkSize, chat.LastMessageID, approxRemCount, limitText)
 		}
 
-		newMessages, users, chats, err := tgLoadMessages(tg, chat.Obj, chunkSize, lastID, historyLimit)
+		newMessages, users, chats, err := tgLoadMessages(tg, chat.Obj, chunkSize, lastID, historyLimit, chat.LastMessageID)
 		if err != nil {
 			return merry.Wrap(err)
 		}
