@@ -102,6 +102,7 @@ func loadAndSaveMessages(tg *tgclient.TGClient, chat *Chat, saver HistorySaver, 
 	prevIterTime := time.Now()
 	for {
 		if lastID >= chat.LastMessageID {
+			log.Info("loading messages done because lastID >= chat.LastMessageID")
 			break
 		}
 
@@ -172,6 +173,7 @@ func loadAndSaveMessages(tg *tgclient.TGClient, chat *Chat, saver HistorySaver, 
 					"go %d message(s) (instead of %d), but their last ID=%d is still less than chat last message ID=%d; "+
 						"maybe someone has removed last message(s) while we were dumping; stopping with this chat for now.",
 					len(newMessages), chunkSize, lastID, chat.LastMessageID)
+				log.Info("loading messages done because of mismatched lastID with chat last message ID when fetched chunk isn't full")
 				break
 			}
 		}
