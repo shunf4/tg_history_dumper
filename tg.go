@@ -393,9 +393,9 @@ func tgMakeInputPeer(peerTL mtproto.TL) (mtproto.TL, error) {
 //  1. when recentOffset <= 0:
 //     requests `limit` messages newer than `lastMsgID`
 //  2. when recentOffset > 0:
-//     requests `limit` oldest messages of `recentOffset` most recent messages
+//     requests `limit` oldest messages of `recentOffset` most recent messages; these messages must be newer than `lastMsgID`
 func tgLoadMessages(
-	tg *tgclient.TGClient, peerTL mtproto.TL, limit, lastMsgID, recentOffset int32,
+	tg *tgclient.TGClient, peerTL mtproto.TL, limit, lastMsgID, recentOffset int32, wholeChatLastMsgID int32,
 ) ([]mtproto.TL, []mtproto.TL, []mtproto.TL, error) {
 	inputPeer, err := tgMakeInputPeer(peerTL)
 	if err != nil {
@@ -411,6 +411,13 @@ func tgLoadMessages(
 		params.AddOffset = -limit
 	} else {
 		params.AddOffset = recentOffset - limit
+		newerThanLastMsgIDOffset := wholeChatLastMsgID - lastMsgID - limit
+		if params.AddOffset > newerThanLastMsgIDOffset {
+			params.AddOffset = newerThanLastMsgIDOffset
+		}
+		if params.AddOffset < 0 {
+			params.AddOffset = 0
+		}
 	}
 	res := tg.SendSyncRetry(params, time.Second, 0, 30*time.Second)
 
