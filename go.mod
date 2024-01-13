@@ -6,7 +6,7 @@ require (
 	github.com/ansel1/merry/v2 v2.2.0
 	github.com/fatih/color v1.16.0
 	github.com/go-test/deep v1.1.0
-	github.com/shunf4/tgclient v0.167.2-0.20240113081105-875369d7fe14
+	github.com/shunf4/tgclient v0.167.2-0.20240113091534-44366d65e809
 	golang.org/x/net v0.20.0
 )
 
