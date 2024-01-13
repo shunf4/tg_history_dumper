@@ -12,8 +12,8 @@ github.com/mattn/go-isatty v0.0.16/go.mod h1:kYGgaQfpe5nmfYZH+SKPsOc2e4SrIfOl2e/
 github.com/mattn/go-isatty v0.0.20 h1:xfD0iDuEKnDkl03q4limB+vH+GxLEtL/jb4xVJSWWEY=
 github.com/mattn/go-isatty v0.0.20/go.mod h1:W+V8PltTTMOvKvAeJH7IuucS94S2C6jfK/D7dTCTo3Y=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
-github.com/shunf4/tgclient v0.167.2-0.20240113091534-44366d65e809 h1:wp/tvDzquc1tmiTODB74Lj5jzvkTOJvmYS2Xg6ewqjA=
-github.com/shunf4/tgclient v0.167.2-0.20240113091534-44366d65e809/go.mod h1:NtTlOuCmKBCJRwYovEnKBMnvCPPufP/FussXS3es6Us=
+github.com/shunf4/tgclient v0.167.2-0.20240113102131-36fdf019eeb8 h1:VCuFSNhOZYNRdQKiq3DmpuVfgmi8BLGWefz4vp8x8e0=
+github.com/shunf4/tgclient v0.167.2-0.20240113102131-36fdf019eeb8/go.mod h1:NtTlOuCmKBCJRwYovEnKBMnvCPPufP/FussXS3es6Us=
 github.com/stretchr/testify v1.8.3 h1:RP3t2pwF7cMEbC1dqtB6poj3niw/9gnV4Cjg5oW5gtY=
 golang.org/x/crypto v0.18.0 h1:PGVlW0xEltQnzFZ55hkuX5+KLyrMYhHld1YHO4AKcdc=
 golang.org/x/crypto v0.18.0/go.mod h1:R0j02AL6hcrfOiy9T4ZYp/rcWeMxM3L6QYxlOuEG1mg=
