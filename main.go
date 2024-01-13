@@ -9,10 +9,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/3bl3gamer/tgclient"
-	"github.com/3bl3gamer/tgclient/mtproto"
 	"github.com/ansel1/merry/v2"
 	"github.com/fatih/color"
+	"github.com/shunf4/tgclient"
+	"github.com/shunf4/tgclient/mtproto"
 )
 
 type LogHandler struct {
