@@ -7,7 +7,7 @@ require (
 	github.com/fatih/color v1.17.0
 	github.com/go-test/deep v1.1.0
 	// github.com/shunf4/tgclient v0.167.1+shunf4-mod-7
-	github.com/shunf4/tgclient v0.167.2-0.20240825151128-3a2e4a8a654f
+	github.com/shunf4/tgclient v0.167.2-0.20240825152228-38356faca19d
 	golang.org/x/net v0.28.0
 )
 
