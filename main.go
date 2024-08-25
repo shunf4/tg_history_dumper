@@ -35,8 +35,8 @@ func (h LogHandler) Log(level mtproto.LogLevel, err error, msg string, args ...i
 	h.DebugFileLoger.Print(text)
 }
 
-func (h LogHandler) Message(isIncoming bool, msg mtproto.TL, id int64) {
-	h.Log(mtproto.DEBUG, nil, h.StringifyMessage(isIncoming, msg, id))
+func (h LogHandler) Message(isIncoming bool, dc int32, msg mtproto.TL, id int64) {
+	h.Log(mtproto.DEBUG, nil, h.StringifyMessage(isIncoming, dc, msg, id))
 }
 
 type FileProgressLogger struct {
