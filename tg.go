@@ -416,6 +416,10 @@ func tgLoadMessages(
 			params.AddOffset = newerThanLastMsgIDOffset
 		}
 		if params.AddOffset < 0 {
+			params.Limit += params.AddOffset
+			if params.Limit <= 0 {
+				params.Limit = 1
+			}
 			params.AddOffset = 0
 		}
 	}
